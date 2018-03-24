@@ -5,8 +5,8 @@ podTemplate(label: label) {
             checkout scm
         }
 
-        stage('yes') {
-            sh 'yes'
+        stage('read file') {
+            sh 'cat hello.txt'
         }
     }
 }
