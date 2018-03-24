@@ -11,7 +11,15 @@ podTemplate(label: label,
 
         stage('docker build') {
             container('docker') {
-                sh "docker build -t christopherl91/app ."
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker-hub-credentials',
+                    usernameVariable: 'USERNAME', 
+                    passwordVariable: 'PASSWORD')]) {
+                    
+                    sh "docker login -u ${USERNAME} -p ${PASSWORD} "
+                    sh "docker build -t ${USERNAME}:${env.BUILD_NUMBER} ."
+                    sh "docker push ${USERNAME}:${env.BUILD_NUMBER} "
+                }
             }
         }
 
