@@ -18,7 +18,7 @@ podTemplate(label: label,
                     
                     sh "docker login -u ${USERNAME} -p ${PASSWORD} "
                     sh "docker build -t ${USERNAME}:${env.BUILD_NUMBER} ."
-                    sh "docker push ${USERNAME}:${env.BUILD_NUMBER} "
+                    sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
                 }
             }
         }
