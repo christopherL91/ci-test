@@ -2,7 +2,7 @@ void with_slack_failure_notifier(Closure task) {
     try {
         task()
     } catch (e) {
-        echo "BUILD HAS FAILED"
+        echo "BUILD HAS FAILED: message ${e}"
         throw e
     }
 }
