@@ -15,9 +15,9 @@ podTemplate(label: label,
                     usernamePassword(credentialsId: 'docker-hub-credentials',
                     usernameVariable: 'USERNAME', 
                     passwordVariable: 'PASSWORD')]) {
-                    
+
                     sh "docker login -u ${USERNAME} -p ${PASSWORD} "
-                    sh "docker build -t ${USERNAME}:${env.BUILD_NUMBER} ."
+                    sh "docker build -t ${USERNAME}/app:${env.BUILD_NUMBER} ."
                     sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
                 }
             }
