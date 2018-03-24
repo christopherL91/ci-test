@@ -1,22 +1,12 @@
 pipeline {
-  agent {
-    kubernetes
-  }
-  stages {
-    stage('Build') {
-      steps {
-        echo 'Building..'
-      }
+    agent {
+        docker { image 'node:9-alpine' }
     }
-    stage('Test') {
-      steps {
-        echo 'Testing..'
-      }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
     }
-    stage('Deploy') {
-      steps {
-        echo 'Deploying....'
-      }
-    }
-  }
 }
