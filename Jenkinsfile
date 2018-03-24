@@ -1,12 +1,8 @@
-pipeline {
-    agent {
-        docker { image 'node:9-alpine' }
-    }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-            }
+def label = "mypod-${UUID.randomUUID().toString()}"
+podTemplate(label: label) {
+    node(label) {
+        stage('Run shell') {
+            sh 'echo hello world'
         }
     }
 }
