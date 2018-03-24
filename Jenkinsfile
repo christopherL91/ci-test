@@ -1,14 +1,7 @@
 def image = "christopherL91"
 def label = "mypod-${UUID.randomUUID().toString()}"
 
-podTemplate(label: label,
-    containers: [
-        containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat')
-    ],
-    volumes: [
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
-    ]
-) {
+podTemplate(label: label) {
     node(label) {
         def app
 
@@ -17,11 +10,9 @@ podTemplate(label: label,
         }
 
         stage('read file') {
-            container('docker') {
-                app = docker.build("my-image:${env.BUILD_ID}")
-                app.inside = {
-                    sh 'echo "Tests passed"'
-                }
+            app = docker.build("my-image:${env.BUILD_ID}")
+            app.inside = {
+                sh 'echo "Tests passed"'
             }
         }
 
