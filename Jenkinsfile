@@ -5,7 +5,7 @@ podTemplate(label: label) {
             checkout scm
         }
 
-        stage('yes')
+        stage('yes') {
             sh 'yes'
         }
     }
