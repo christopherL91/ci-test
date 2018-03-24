@@ -1,7 +1,10 @@
 def image = "christopherL91"
 def label = "mypod-${UUID.randomUUID().toString()}"
 
-podTemplate(label: label) {
+podTemplate(label: label,
+    containers: [containerTemplate(name: 'jlnp', image: 'empatica/jnlp-slave-with-docker', ttyEnabled: true, command: 'cat')],
+    volumes: [hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')]
+) {
     node(label) {
         def app
 
