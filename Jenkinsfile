@@ -15,7 +15,7 @@ podTemplate(label: label,
                     sh "docker build -t christopherl91/app:${env.BUILD_NUMBER} ."
                 }
             }
-            
+
             stage('docker test') {
                 container('docker') {
                     sh "docker run christopherl91/app:${env.BUILD_NUMBER} env"
@@ -28,17 +28,16 @@ podTemplate(label: label,
                         usernamePassword(credentialsId: 'docker-hub-credentials',
                         usernameVariable: 'USERNAME',
                         passwordVariable: 'PASSWORD')]) {
-
-                        sh "docker login -u ${USERNAME} -p ${PASSWORD} "
-                        sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
+                            sh "docker login -u ${USERNAME} -p ${PASSWORD} "
+                            sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
                     }
                 }
             }
         } catch(err) {
             currentBuild.result = "FAILED"
-            throw err    
+            throw err
         } finally {
-            notifyBuild(currentBuild.result)    
+            notifyBuild(currentBuild.result)
         }
     }
 }
@@ -66,5 +65,5 @@ def notifyBuild(String buildStatus = 'STARTED') {
         color = 'RED'
         colorCode = '#FF0000'
     }
-    sh "echo color: ${color}, message ${summary}"
+    //sh "echo color: ${color}, message ${summary}"
 }
