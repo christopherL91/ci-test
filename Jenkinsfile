@@ -1,12 +1,27 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
-podTemplate(label: label) {
+
+podTemplate(label: label, 
+    containers: [
+        containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat')
+    ],
+    volumes: [
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+    ]
+) {
     node(label) {
         stage('checkout') {
             checkout scm
         }
 
         stage('read file') {
-            sh 'cat hello.txt'
+            container('docker') {
+                sh 'ls -li'
+                sh 'env'
+            }
+        }
+
+        stage('logging') {
+            containerLog('docker')
         }
     }
 }
