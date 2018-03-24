@@ -15,8 +15,9 @@ podTemplate(label: label,
 
         stage('read file') {
             container('docker') {
-                sh 'ls -li'
-                sh 'env'
+                docker.image('alpine').inside {
+                    sh 'make test'
+                }
             }
         }
 
