@@ -12,21 +12,27 @@ podTemplate(label: label,
 
             stage('docker build') {
                 container('docker') {
+                    sh "docker build -t christopherl91/app:${env.BUILD_NUMBER} ."
+                }
+            }
+            
+            stage('docker test') {
+                container('docker') {
+                    sh "docker run christopherl91/app:${env.BUILD_NUMBER} env"
+                }
+            }
+
+            stage('docker push') {
+                container('docker') {
                     withCredentials([
                         usernamePassword(credentialsId: 'docker-hub-credentials',
                         usernameVariable: 'USERNAME',
                         passwordVariable: 'PASSWORD')]) {
 
                         sh "docker login -u ${USERNAME} -p ${PASSWORD} "
-                        sh "docker build -t ${USERNAME}/app:${env.BUILD_NUMBER} ."
-                        sh "docker run ${USERNAME}/app:${env.BUILD_NUMBER} env"
                         sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
                     }
                 }
-            }
-
-            stage('logging') {
-                containerLog('docker')
             }
         } catch(err) {
             currentBuild.result = "FAILED"
@@ -60,5 +66,5 @@ def notifyBuild(String buildStatus = 'STARTED') {
         color = 'RED'
         colorCode = '#FF0000'
     }
-    echo "color: ${color}, message ${summary}"
+    sh "echo color: ${color}, message ${summary}"
 }
