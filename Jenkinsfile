@@ -27,7 +27,7 @@ podTemplate(label: label,
                     with_slack_failure_notifier {
                         sh "docker login -u ${USERNAME} -p ${PASSWORD} "
                         sh "docker build -t ${USERNAME}/app:${env.BUILD_NUMBER} ."
-                        sh "docker run -it ${USERNAME}/app:${env.BUILD_NUMBER} en"
+                        sh "docker run ${USERNAME}/app:${env.BUILD_NUMBER} en"
                         sh "docker push ${USERNAME}/app:${env.BUILD_NUMBER} "
                     }
                 }
