@@ -18,7 +18,7 @@ podTemplate(label: label,
 
             stage('docker test') {
                 container('docker') {
-                    sh "docker run christopherl91/app:${env.BUILD_NUMBER} en"
+                    sh "docker run christopherl91/app:${env.BUILD_NUMBER} env"
                 }
             }
 
